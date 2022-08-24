@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API" href="api.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+    <link rel="shortcut icon" href="_static/favicon.ico"/><meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
         <title>Trustee 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
@@ -145,6 +145,10 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
   
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="_static/icon.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="_static/icon-alt.png" alt="Dark Logo"/>
+  </div>
   
   <span class="sidebar-brand-text">Trustee 1.0.0 documentation</span>
   
@@ -189,27 +193,153 @@
           </label>
         </div>
         <article role="main">
-          <section id="trustee">
-<h1>Trustee<a class="headerlink" href="#trustee" title="Permalink to this heading">#</a></h1>
+          <section id="welcome-to-trustee-s-docs">
+<h1>Welcome to Trustee’s docs!<a class="headerlink" href="#welcome-to-trustee-s-docs" title="Permalink to this heading">#</a></h1>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Docs still under construction.</p>
 </div>
+<a class="only-light reference internal image-reference" href="_static/logo.png"><img alt="Trustee" class="only-light align-center" src="_static/logo.png" style="width: 400px;" /></a>
+<a class="only-dark reference internal image-reference" href="_static/logo-alt.png"><img alt="Trustee" class="only-dark align-center" src="_static/logo-alt.png" style="width: 400px;" /></a>
 <p>Welcome to Trustee’s documentation. Get started with <cite>installation</cite>
 and then get an overview with the <cite>quickstart</cite>. The rest of the docs
 describe each component of Trustee in detail, with a full reference in
 the <a class="reference internal" href="api.html"><span class="doc">API</span></a> section.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>Trustee is a framework to extract decision tree explanation from black-box ML models.</p>
+<figure class="align-center" id="id1">
+<img alt="Trustee Flowchart" src="_static/flowchart.png" />
+<figcaption>
+<p><span class="caption-text">Standard AI/ML development pipeline extended by Trustee.</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">#</a></h2>
+<p>This section contains basic information and instructions to get started with Trustee.</p>
 <section id="python-version">
-<h2>Python Version<a class="headerlink" href="#python-version" title="Permalink to this heading">#</a></h2>
-<p>Trustee supports Python &gt;=3.8 and &lt;=3.9.</p>
+<h3>Python Version<a class="headerlink" href="#python-version" title="Permalink to this heading">#</a></h3>
+<p>Trustee supports Python &gt;=3.8 and &lt;=3.9. In theory, other versions of Python 3.x and newer could be supported as well,
+but support is limited by the versions of Python supported by Trustee’s dependecies. We are considering a no-deps core
+release in the future.</p>
 </section>
 <section id="install-trustee">
-<h2>Install Trustee<a class="headerlink" href="#install-trustee" title="Permalink to this heading">#</a></h2>
+<h3>Install Trustee<a class="headerlink" href="#install-trustee" title="Permalink to this heading">#</a></h3>
 <p>Use the following command to install Trustee:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ pip install trustee
 </pre></div>
 </div>
-<p>Trustee is now installed.</p>
+</section>
+<section id="sample-code">
+<h3>Sample Code<a class="headerlink" href="#sample-code" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span>
+
+<span class="kn">from</span> <span class="nn">trustee</span> <span class="kn">import</span> <span class="n">ClassificationTrustee</span>
+
+<span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.30</span><span class="p">)</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;sepallength&quot;</span><span class="p">:</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;sepalwidth&quot;</span><span class="p">:</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="s2">&quot;petallength&quot;</span><span class="p">:</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
+        <span class="s2">&quot;petalwidth&quot;</span><span class="p">:</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span>
+        <span class="s2">&quot;species&quot;</span><span class="p">:</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">trustee</span> <span class="o">=</span> <span class="n">ClassificationTrustee</span><span class="p">(</span><span class="n">expert</span><span class="o">=</span><span class="n">clf</span><span class="p">)</span>
+<span class="n">trustee</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">num_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">samples_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">trustee</span><span class="o">.</span><span class="n">prune</span><span class="p">(</span><span class="n">top_k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">dt_y_pred</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Top-k Model explanation global fidelity report:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">dt_y_pred</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Top-k Model explanation score report:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">dt_y_pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="other-use-cases">
+<h3>Other Use Cases<a class="headerlink" href="#other-use-cases" title="Permalink to this heading">#</a></h3>
+<p>For other examples and use cases of how Trustee can used to scrutinize ML models, listed in the table below, please check our <a class="reference external" href="https://github.com/TrusteeML/emperor">Use Cases repository</a>.</p>
+<div class="table-wrapper align-left docutils container">
+<table class="align-left docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Use Case</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><cite>heartbleed_case/</cite></p></td>
+<td><p>Trustee application to a Random Forest Classifier for an Intrustion Detection System, trained with CIC-IDS-2017 dataset pre-computed features.</p></td>
+</tr>
+<tr class="row-odd"><td><p><cite>kitsune_case/</cite></p></td>
+<td><p>Trustee application to Kitsune  model for anomaly detection in network traffic, trained with features extracted from Kitsune’s Mirai attack trace.</p></td>
+</tr>
+<tr class="row-even"><td><p><cite>iot_case/</cite></p></td>
+<td><p>Trustee application to Random Forest Classifier to distguish IoT devices, trained with features extracted from the pcaps from the UNSW IoT Dataset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><cite>moon_star_case/</cite></p></td>
+<td><p>Trustee application to Neural Network Moon and Stars Shortcut learning toy example.</p></td>
+</tr>
+<tr class="row-even"><td><p><cite>nprint_ids_case/</cite></p></td>
+<td><p>Trustee application to the nPrintML AutoGluon Tabular Predictor for an Intrustion Detection System, also trained using pcaps from the CIC-IDS-2017 dataset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><cite>nprint_ids_case/</cite></p></td>
+<td><p>Trustee application to the nPrintML AutoGluon Tabular Predictor for OS Fingerprinting, also trained using with pcaps from the CIC-IDS-2017 dataset.</p></td>
+</tr>
+<tr class="row-even"><td><p><cite>pensieve_case/</cite></p></td>
+<td><p>Trustee application to the Pensieve RL model for adaptive bit-rate prediction, and comparison to related work Metis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><cite>vpn_case/</cite></p></td>
+<td><p>Trustee application the 1D-CNN trained to detect VPN traffic trained with the ISCX VPN-nonVPN dataset.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="supported-ai-ml-libraries">
+<h3>Supported AI/ML Libraries<a class="headerlink" href="#supported-ai-ml-libraries" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper align-left docutils container">
+<table class="align-left docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Library</p></th>
+<th class="head"><p>Supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><cite>scikit-learn</cite></p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><cite>Keras</cite></p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><cite>Tensorflow</cite></p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><cite>Pytorch</cite></p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><cite>AutoGluon</cite></p></td>
+<td><p>✅</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 </section>
 <section id="api-reference">
 <h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading">#</a></h2>
@@ -223,6 +353,21 @@ method, this part of the documentation is for you.</p>
 </ul>
 </li>
 </ul>
+</div>
+</section>
+<section id="citing-us">
+<h2>Citing Us<a class="headerlink" href="#citing-us" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@inproceedings</span><span class="p">{</span><span class="n">Jacobs2022</span><span class="p">,</span>
+  <span class="n">title</span>        <span class="o">=</span> <span class="p">{</span><span class="n">AI</span><span class="o">/</span><span class="n">ML</span> <span class="ow">and</span> <span class="n">Network</span> <span class="n">Security</span><span class="p">:</span> <span class="n">The</span> <span class="n">Emperor</span> <span class="n">has</span> <span class="n">no</span> <span class="n">Clothes</span><span class="p">},</span>
+  <span class="n">author</span>       <span class="o">=</span> <span class="p">{</span><span class="n">A</span><span class="o">.</span> <span class="n">S</span><span class="o">.</span> <span class="n">Jacobs</span> <span class="ow">and</span> <span class="n">R</span><span class="o">.</span> <span class="n">Beltiukov</span> <span class="ow">and</span> <span class="n">W</span><span class="o">.</span> <span class="n">Willinger</span> <span class="ow">and</span> <span class="n">R</span><span class="o">.</span> <span class="n">A</span><span class="o">.</span> <span class="n">Ferreira</span> <span class="ow">and</span> <span class="n">A</span><span class="o">.</span> <span class="n">Gupta</span> <span class="ow">and</span> <span class="n">L</span><span class="o">.</span> <span class="n">Z</span><span class="o">.</span> <span class="n">Granville</span><span class="p">},</span>
+  <span class="n">year</span>         <span class="o">=</span> <span class="mi">2022</span><span class="p">,</span>
+  <span class="n">booktitle</span>    <span class="o">=</span> <span class="p">{</span><span class="n">Proceedings</span> <span class="n">of</span> <span class="n">the</span> <span class="mi">2022</span> <span class="n">ACM</span> <span class="n">SIGSAC</span> <span class="n">Conference</span> <span class="n">on</span> <span class="n">Computer</span> <span class="ow">and</span> <span class="n">Communications</span> <span class="n">Security</span><span class="p">},</span>
+  <span class="n">location</span>     <span class="o">=</span> <span class="p">{</span><span class="n">Los</span> <span class="n">Angeles</span><span class="p">,</span> <span class="n">CA</span><span class="p">,</span> <span class="n">USA</span><span class="p">},</span>
+  <span class="n">publisher</span>    <span class="o">=</span> <span class="p">{</span><span class="n">Association</span> <span class="k">for</span> <span class="n">Computing</span> <span class="n">Machinery</span><span class="p">},</span>
+  <span class="n">address</span>      <span class="o">=</span> <span class="p">{</span><span class="n">New</span> <span class="n">York</span><span class="p">,</span> <span class="n">NY</span><span class="p">,</span> <span class="n">USA</span><span class="p">},</span>
+  <span class="n">series</span>       <span class="o">=</span> <span class="p">{</span><span class="n">CCS</span> <span class="s1">&#39;22}</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </section>
 </section>
@@ -246,7 +391,7 @@ method, this part of the documentation is for you.</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2022, Arthur Selle Jacobs
+                Copyright &#169; 2022,  Arthur Selle Jacobs
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -255,6 +400,11 @@ method, this part of the documentation is for you.</p>
           </div>
           <div class="right-details">
             <div class="icons">
+              <a class="muted-link " href="https://github.com/TrusteeML/trustee" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
               
             </div>
           </div>
@@ -274,10 +424,18 @@ method, this part of the documentation is for you.</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Trustee</a><ul>
+<li><a class="reference internal" href="#">Welcome to Trustee’s docs!</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#getting-started">Getting Started</a><ul>
 <li><a class="reference internal" href="#python-version">Python Version</a></li>
 <li><a class="reference internal" href="#install-trustee">Install Trustee</a></li>
+<li><a class="reference internal" href="#sample-code">Sample Code</a></li>
+<li><a class="reference internal" href="#other-use-cases">Other Use Cases</a></li>
+<li><a class="reference internal" href="#supported-ai-ml-libraries">Supported AI/ML Libraries</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#api-reference">API Reference</a></li>
+<li><a class="reference internal" href="#citing-us">Citing Us</a></li>
 </ul>
 </li>
 </ul>
