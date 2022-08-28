@@ -39,10 +39,7 @@ This section contains basic information and instructions to get started with Tru
 Python Version
 ***************
 
-Trustee supports Python >=3.8 and <=3.9. In theory, other versions of Python 3.x and newer could be supported as well, 
-but support is limited by the versions of Python supported by Trustee's dependecies. We are considering a no-deps core 
-release in the future. 
-
+Trustee supports Python >=3.7.
 
 Install Trustee
 ***************
@@ -66,7 +63,6 @@ Sample Code
 
   from trustee import ClassificationTrustee
 
-  iris = datasets.load_iris()
   X, y = datasets.load_iris(return_X_y=True)
   X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30)
 
@@ -75,13 +71,13 @@ Sample Code
   y_pred = clf.predict(X_test)
 
   trustee = ClassificationTrustee(expert=clf)
-  trustee.fit(X_train, y_train, num_iter=50, samples_size=0.3, verbose=True)
-  dt = trustee.prune(top_k=10)
+  trustee.fit(X_train, y_train, num_iter=50, num_stability_iter=10, samples_size=0.3, verbose=True)
+  dt = trustee.explain()
   dt_y_pred = dt.predict(X_test)
 
-  print("Top-k Model explanation global fidelity report:")
+  print("Model explanation global fidelity report:")
   print(classification_report(y_pred, dt_y_pred))
-  print("Top-k Model explanation score report:")
+  print("Model explanation score report:")
   print(classification_report(y_test, dt_y_pred))
 
 
@@ -117,7 +113,7 @@ Supported AI/ML Libraries
     `scikit-learn`  |:white_check_mark:|
     `Keras`         |:white_check_mark:|
     `Tensorflow`    |:white_check_mark:|
-    `Pytorch`       |:white_check_mark:|
+    `PyTorch`       |:white_check_mark:|
     `AutoGluon`     |:white_check_mark:|
     ==============  ===================
 
