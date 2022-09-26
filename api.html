@@ -3,12 +3,16 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Welcome to Trustee’s docs!" href="index.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Examples" href="auto_examples/index.html" /><link rel="prev" title="Overview" href="index.html" />
 
     <link rel="shortcut icon" href="_static/favicon.ico"/><meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
         <title>API - Trustee 1.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -160,6 +164,13 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">API</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="auto_examples/index.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/trust_regression.html">TrustReport for Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/trust_classification.html">TrustReport for Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/regression.html">RegressionTrustee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/classification.html">ClassificationTrustee</a></li>
+</ul>
+</li>
 </ul>
 
 </div>
@@ -206,7 +217,7 @@ important right here and provide links to the canonical documentation.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">trustee.main.</span></span><span class="sig-name descname"><span class="pre">ClassificationTrustee</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expert</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.ClassificationTrustee" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#trustee.main.Trustee" title="trustee.main.Trustee"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trustee</span></code></a></p>
 <p>Implements the Trust-oriented Decision Tree Extraction (Trustee) algorithm to train
-a student Decision Tree Classifier based on observations from an Expert classification model.</p>
+a student DecisionTreeClassifier based on observations from an Expert classification model.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.ClassificationTrustee.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expert</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.ClassificationTrustee.__init__" title="Permalink to this definition">#</a></dt>
@@ -214,9 +225,10 @@ a student Decision Tree Classifier based on observations from an Expert classifi
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>expert</strong> – The ML blackbox model to analyze.</p></li>
-<li><p><strong>student_class</strong> – Class of student to train based on blackbox model predictions</p></li>
-<li><p><strong>(</strong><strong>optional</strong><strong>)</strong> (<em>logger</em>) – A logger object</p></li>
+<li><p><strong>expert</strong> (<em>object</em>) – The ML blackbox model to analyze. The expert model must have a <cite>predict</cite> method call implemented for
+Trustee to work properly, unless explicitly stated otherwise using the <cite>predict_method_name</cite> argument
+in the fit() method.</p></li>
+<li><p><strong>logger</strong> (<em>Logger object</em><em> , </em><em>default=None</em>) – A logger object to log messages to. If none is given, the print() method will be used to log messages.</p></li>
 </ul>
 </dd>
 </dl>
@@ -225,7 +237,38 @@ a student Decision Tree Classifier based on observations from an Expert classifi
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.ClassificationTrustee.explain">
 <span class="sig-name descname"><span class="pre">explain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.ClassificationTrustee.explain" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns explainable model that best imitates Expert model, based on calculated rewards.</p>
+<dd><p>Returns explainable model that best imitates Expert model, based on highest mean agreement and highest fidelity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><strong>top_student</strong> – (dt, pruned_dt, agreement, reward)</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Unconstrained fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>pruned_dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Top-k pruned fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>agreement: float</dt><dd><p>Mean agreement of pruned student model with respect to others.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>reward: float</dt><dd><p>Fidelity of student model to the expert model.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -235,20 +278,37 @@ a student Decision Tree Classifier based on observations from an Expert classifi
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> – </p></li>
-<li><p><strong>y</strong> – </p></li>
-<li><p><strong>max_leaf_nodes</strong> – </p></li>
-<li><p><strong>max_depth</strong> – </p></li>
-<li><p><strong>ccp_alpha</strong> – </p></li>
-<li><p><strong>train_size</strong> – </p></li>
-<li><p><strong>num_iter</strong> – </p></li>
-<li><p><strong>num_samples</strong> – </p></li>
-<li><p><strong>samples_size</strong> – </p></li>
-<li><p><strong>use_features</strong> – </p></li>
-<li><p><strong>predict_method_name</strong> – </p></li>
-<li><p><strong>optimization</strong> – </p></li>
-<li><p><strong>aggregate</strong> – </p></li>
-<li><p><strong>verbose</strong> – </p></li>
+<li><p><strong>X</strong> (<em>{array-like</em><em>, </em><em>sparse matrix} of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The training input samples. Internally, it will be converted to a pandas DataFrame.</p></li>
+<li><p><strong>y</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>,</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>n_outputs</em><em>)</em>) – The target values for X (class labels in classification, real numbers in regression).
+Internally, it will be converted to a pandas Series.</p></li>
+<li><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k branches, sorted by number of samples per branch, to keep after finding
+decision tree with highest fidelity.</p></li>
+<li><p><strong>max_leaf_nodes</strong> (<em>int</em><em>, </em><em>default=None</em>) – Grow a tree with max_leaf_nodes in best-first fashion. Best nodes are defined as
+relative reduction in impurity. If None then unlimited number of leaf nodes.</p></li>
+<li><p><strong>max_depth</strong> (<em>int</em><em>, </em><em>default=None</em>) – The maximum depth of the tree. If None, then nodes are expanded until all leaves are pure.</p></li>
+<li><p><strong>ccp_alpha</strong> (<em>float</em><em>, </em><em>default=0.0</em>) – Complexity parameter used for Minimal Cost-Complexity Pruning. The subtree with the
+largest cost complexity that is smaller than ccp_alpha will be chosen. By default,
+no pruning is performed. See Minimal Cost-Complexity Pruning here for details:
+<a class="reference external" href="https://scikit-learn.org/stable/modules/tree.html#minimal-cost-complexity-pruning">https://scikit-learn.org/stable/modules/tree.html#minimal-cost-complexity-pruning</a></p></li>
+<li><p><strong>train_size</strong> (<em>float</em><em> or </em><em>int</em><em>, </em><em>default=0.7</em>) – If float, should be between 0.0 and 1.0 and represent the proportion of the dataset
+to include in the train split. If int, represents the absolute number of train samples.</p></li>
+<li><p><strong>num_iter</strong> (<em>int</em><em>, </em><em>default=50</em>) – Number of iterations to repeat Trustee inner-loop for.</p></li>
+<li><p><strong>num_stability_iter</strong> (<em>int</em><em>, </em><em>default=5</em>) – Number of stability to repeat Trustee stabilization outer-loop for.</p></li>
+<li><p><strong>num_samples</strong> (<em>int</em><em>, </em><em>default=2000</em>) – The absolute number of samples to fetch from the training dataset split to train the
+student decision tree model. If the <cite>samples_size</cite> argument is provided, this arg is
+ignored.</p></li>
+<li><p><strong>samples_size</strong> (<em>float</em><em>, </em><em>default=None</em>) – The fraction of the training dataset to use to train the student decision tree model.
+If None, the value is automatically set to the <cite>num_samples</cite> provided value.</p></li>
+<li><p><strong>use_features</strong> (<em>array-like</em><em>, </em><em>default=None</em>) – Array-like of integers representing the indexes of features from the <cite>X</cite> training samples.
+If not None, only the features indicated by the provided indexes will be used to train the
+student decision tree model.</p></li>
+<li><p><strong>predict_method_name</strong> (<em>str</em><em>, </em><em>default=&quot;predict&quot;</em>) – The method interface to use to get predictions from the expert model.
+If no value is passed, the default <cite>predict</cite> interface is used.</p></li>
+<li><p><strong>optimization</strong> (<em>{&quot;fidelity&quot;</em><em>, </em><em>&quot;accuracy&quot;}</em><em>, </em><em>default=&quot;fidelity&quot;</em>) – The comparison criteria to optimize the decision tree students in Trustee inner-loop.
+Used for ablation study only.</p></li>
+<li><p><strong>aggregate</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Boolean indicating whether dataset aggregation should be used in Trustee inner-loop.
+Used for ablation study only.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Boolean indicating whether to log messages.</p></li>
 </ul>
 </dd>
 </dl>
@@ -257,50 +317,142 @@ a student Decision Tree Classifier based on observations from an Expert classifi
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.ClassificationTrustee.get_all_students">
 <span class="sig-name descname"><span class="pre">get_all_students</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.ClassificationTrustee.get_all_students" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of all (student, reward) obtained during the inner-loop process.</p>
+<dd><p>Get list of all (student, reward) obtained during the inner-loop process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><strong>students_by_iter</strong> – Matrix with all student models trained during <cite>fit()</cite>.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Unconstrained fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>reward: float</dt><dd><p>Fidelity of student model to the expert model.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>array-like of shape (num_stability_iter, num_iter) of tuple (dt, reward)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.ClassificationTrustee.get_leaves_by_level">
 <span class="sig-name descname"><span class="pre">get_leaves_by_level</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.ClassificationTrustee.get_leaves_by_level" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of leaves by level of the best student.</p>
+<dd><p>Returns number of leaves by level of the best student.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>leaves_by_level</strong> – Dict of leaves by level. {“&lt;level&gt;(int)”: &lt;leaves&gt;(int)}</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict of int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.ClassificationTrustee.get_n_classes">
 <span class="sig-name descname"><span class="pre">get_n_classes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.ClassificationTrustee.get_n_classes" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns number of classes used in the top student model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n_classes</strong> – Number of classes outputted in top student model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.ClassificationTrustee.get_n_features">
 <span class="sig-name descname"><span class="pre">get_n_features</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.ClassificationTrustee.get_n_features" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns number of features used in the top student model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n_features</strong> – Number of features used in top student model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.ClassificationTrustee.get_samples_by_level">
 <span class="sig-name descname"><span class="pre">get_samples_by_level</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.ClassificationTrustee.get_samples_by_level" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of samples by level of the best student.</p>
+<dd><p>Get number of samples by level of the best student.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>samples_by_level</strong> – Dict of samples by level. {“&lt;level&gt;(int)”: &lt;samples&gt;(int)}</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict of int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.ClassificationTrustee.get_samples_sum">
 <span class="sig-name descname"><span class="pre">get_samples_sum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.ClassificationTrustee.get_samples_sum" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the sum of all samples in all non-leaf _nodes in best student model.</p>
+<dd><p>Get the sum of all samples in all non-leaf _nodes in best student model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>samples_sum</strong> – Sum of all samples covered by non-leaf nodes in top student model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.ClassificationTrustee.get_stable">
 <span class="sig-name descname"><span class="pre">get_stable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.ClassificationTrustee.get_stable" title="Permalink to this definition">#</a></dt>
-<dd><p>Filters out explanations from Trustee sability analysis with less than threshold agreement.</p>
+<dd><p>Filters out explanations from Trustee stability analysis with less than threshold agreement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>10</strong> (<em>top_k =</em>) – </p></li>
-<li><p><strong>0.9</strong> (<em>threshold =</em>) – </p></li>
-<li><p><strong>True</strong> (<em>sort =</em>) – </p></li>
+<li><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k branches, sorted by number of samples per branch, to keep after finding
+decision tree with highest fidelity.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>default=0.9</em>) – Remove any student decision tree explanation if their mean agreement goes below given threshold.
+To keep all students regardless of mean agreement, pass 0.</p></li>
+<li><p><strong>sort</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Boolean indicating whether to sort returned stable student explanation based on mean agreement.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>stable_explanations</strong> – [(dt, pruned_dt, agreement, reward), …]</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Unconstrained fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>pruned_dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Top-k pruned fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>agreement: float</dt><dd><p>Mean agreement of pruned student model with respect to others.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>reward: float</dt><dd><p>Fidelity of student model to the expert model.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like of tuple</p>
 </dd>
 </dl>
 </dd></dl>
@@ -308,25 +460,100 @@ a student Decision Tree Classifier based on observations from an Expert classifi
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.ClassificationTrustee.get_top_branches">
 <span class="sig-name descname"><span class="pre">get_top_branches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.ClassificationTrustee.get_top_branches" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of top _branches of the best student.</p>
+<dd><p>Returns list of top-k _branches of the best student, sorted by the number of samples the branch classifies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k branches, sorted by number of samples per branch, to return.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>top_branches</strong> – Dict of top-k branches from top student model.</p>
+<ul class="simple">
+<li><p>dict: { “level”: int, “path”: array-like of dict, “class”: int, “prob”: float, “samples”: int}</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like of dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.ClassificationTrustee.get_top_features">
 <span class="sig-name descname"><span class="pre">get_top_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.ClassificationTrustee.get_top_features" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of top _features of the best student.</p>
+<dd><p>Get list of top _features of the best student, sorted by the number of samples the feature is used to classify.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k features, sorted by number of samples per branch, to return.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>top_features</strong> – List of top-k features from top student model.</p>
+<ul class="simple">
+<li><p>dict {“&lt;feature&gt;(int)” : {“count”: int”samples”: int}}</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like of dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.ClassificationTrustee.get_top_nodes">
 <span class="sig-name descname"><span class="pre">get_top_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.ClassificationTrustee.get_top_nodes" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of top _nodes of the best student.</p>
+<dd><p>Returns list of top _nodes of the best student, sorted by the proportion of samples split by each node.</p>
+<dl class="simple">
+<dt>The proportion of samples is calculated based on the impurity decrease equation is the following::</dt><dd><p>n_samples * abs(left_impurity - right_impurity)</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k nodes, sorted by number of samples per branch, to return.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>top_nodes</strong> – List of top-k nodes from top student model.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dict: {“idx”: int, “level”: int, “feature”: int, “threshold”: float, “samples”: int,</dt><dd><p>”values”: tuple of int, “gini_split”: tuple of float, “data_split”: tuple of float,
+“data_split_by_class”: array-like of tuple of float}</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like of dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.ClassificationTrustee.get_top_students">
 <span class="sig-name descname"><span class="pre">get_top_students</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.ClassificationTrustee.get_top_students" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of top (students, reward) obtained during the outer-loop process.</p>
+<dd><p>Get list of top (students, reward) obtained during the outer-loop process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><strong>top_students</strong> – List with top student models trained during <cite>fit()</cite>.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Unconstrained fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>reward: float</dt><dd><p>Fidelity of student model to the expert model.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>array-like of shape (num_stability_iter,) of tuple (dt, reward)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -336,9 +563,15 @@ a student Decision Tree Classifier based on observations from an Expert classifi
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>top_k</strong> – </p></li>
-<li><p><strong>max_impurity</strong> – </p></li>
+<li><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k branches, sorted by number of samples per branch, to return.</p></li>
+<li><p><strong>max_impurity</strong> (<em>float</em><em>, </em><em>default=0.10</em>) – Maximum impurity allowed in a branch. Will prune anything below that impurity level.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>top_k_pruned_student</strong> – Top-k pruned best fitted student model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{DecisionTreeClassifier, DecisionTreeRegressor}</p>
 </dd>
 </dl>
 </dd></dl>
@@ -350,7 +583,7 @@ a student Decision Tree Classifier based on observations from an Expert classifi
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">trustee.main.</span></span><span class="sig-name descname"><span class="pre">RegressionTrustee</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expert</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.RegressionTrustee" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#trustee.main.Trustee" title="trustee.main.Trustee"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trustee</span></code></a></p>
 <p>Implements the Trust-oriented Decision Tree Extraction (Trustee) algorithm to train a
-student Decision Tree Regressor based on observations from an Expert regression model.</p>
+student DecisionTreeRegressor based on observations from an Expert regression model.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.RegressionTrustee.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expert</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.RegressionTrustee.__init__" title="Permalink to this definition">#</a></dt>
@@ -358,9 +591,10 @@ student Decision Tree Regressor based on observations from an Expert regression 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>expert</strong> – The ML blackbox model to analyze.</p></li>
-<li><p><strong>student_class</strong> – Class of student to train based on blackbox model predictions</p></li>
-<li><p><strong>(</strong><strong>optional</strong><strong>)</strong> (<em>logger</em>) – A logger object</p></li>
+<li><p><strong>expert</strong> (<em>object</em>) – The ML blackbox model to analyze. The expert model must have a <cite>predict</cite> method call implemented for
+Trustee to work properly, unless explicitly stated otherwise using the <cite>predict_method_name</cite> argument
+in the fit() method.</p></li>
+<li><p><strong>logger</strong> (<em>Logger object</em><em> , </em><em>default=None</em>) – A logger object to log messages to. If none is given, the print() method will be used to log messages.</p></li>
 </ul>
 </dd>
 </dl>
@@ -369,7 +603,38 @@ student Decision Tree Regressor based on observations from an Expert regression 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.RegressionTrustee.explain">
 <span class="sig-name descname"><span class="pre">explain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.RegressionTrustee.explain" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns explainable model that best imitates Expert model, based on calculated rewards.</p>
+<dd><p>Returns explainable model that best imitates Expert model, based on highest mean agreement and highest fidelity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><strong>top_student</strong> – (dt, pruned_dt, agreement, reward)</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Unconstrained fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>pruned_dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Top-k pruned fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>agreement: float</dt><dd><p>Mean agreement of pruned student model with respect to others.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>reward: float</dt><dd><p>Fidelity of student model to the expert model.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -379,20 +644,37 @@ student Decision Tree Regressor based on observations from an Expert regression 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> – </p></li>
-<li><p><strong>y</strong> – </p></li>
-<li><p><strong>max_leaf_nodes</strong> – </p></li>
-<li><p><strong>max_depth</strong> – </p></li>
-<li><p><strong>ccp_alpha</strong> – </p></li>
-<li><p><strong>train_size</strong> – </p></li>
-<li><p><strong>num_iter</strong> – </p></li>
-<li><p><strong>num_samples</strong> – </p></li>
-<li><p><strong>samples_size</strong> – </p></li>
-<li><p><strong>use_features</strong> – </p></li>
-<li><p><strong>predict_method_name</strong> – </p></li>
-<li><p><strong>optimization</strong> – </p></li>
-<li><p><strong>aggregate</strong> – </p></li>
-<li><p><strong>verbose</strong> – </p></li>
+<li><p><strong>X</strong> (<em>{array-like</em><em>, </em><em>sparse matrix} of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The training input samples. Internally, it will be converted to a pandas DataFrame.</p></li>
+<li><p><strong>y</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>,</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>n_outputs</em><em>)</em>) – The target values for X (class labels in classification, real numbers in regression).
+Internally, it will be converted to a pandas Series.</p></li>
+<li><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k branches, sorted by number of samples per branch, to keep after finding
+decision tree with highest fidelity.</p></li>
+<li><p><strong>max_leaf_nodes</strong> (<em>int</em><em>, </em><em>default=None</em>) – Grow a tree with max_leaf_nodes in best-first fashion. Best nodes are defined as
+relative reduction in impurity. If None then unlimited number of leaf nodes.</p></li>
+<li><p><strong>max_depth</strong> (<em>int</em><em>, </em><em>default=None</em>) – The maximum depth of the tree. If None, then nodes are expanded until all leaves are pure.</p></li>
+<li><p><strong>ccp_alpha</strong> (<em>float</em><em>, </em><em>default=0.0</em>) – Complexity parameter used for Minimal Cost-Complexity Pruning. The subtree with the
+largest cost complexity that is smaller than ccp_alpha will be chosen. By default,
+no pruning is performed. See Minimal Cost-Complexity Pruning here for details:
+<a class="reference external" href="https://scikit-learn.org/stable/modules/tree.html#minimal-cost-complexity-pruning">https://scikit-learn.org/stable/modules/tree.html#minimal-cost-complexity-pruning</a></p></li>
+<li><p><strong>train_size</strong> (<em>float</em><em> or </em><em>int</em><em>, </em><em>default=0.7</em>) – If float, should be between 0.0 and 1.0 and represent the proportion of the dataset
+to include in the train split. If int, represents the absolute number of train samples.</p></li>
+<li><p><strong>num_iter</strong> (<em>int</em><em>, </em><em>default=50</em>) – Number of iterations to repeat Trustee inner-loop for.</p></li>
+<li><p><strong>num_stability_iter</strong> (<em>int</em><em>, </em><em>default=5</em>) – Number of stability to repeat Trustee stabilization outer-loop for.</p></li>
+<li><p><strong>num_samples</strong> (<em>int</em><em>, </em><em>default=2000</em>) – The absolute number of samples to fetch from the training dataset split to train the
+student decision tree model. If the <cite>samples_size</cite> argument is provided, this arg is
+ignored.</p></li>
+<li><p><strong>samples_size</strong> (<em>float</em><em>, </em><em>default=None</em>) – The fraction of the training dataset to use to train the student decision tree model.
+If None, the value is automatically set to the <cite>num_samples</cite> provided value.</p></li>
+<li><p><strong>use_features</strong> (<em>array-like</em><em>, </em><em>default=None</em>) – Array-like of integers representing the indexes of features from the <cite>X</cite> training samples.
+If not None, only the features indicated by the provided indexes will be used to train the
+student decision tree model.</p></li>
+<li><p><strong>predict_method_name</strong> (<em>str</em><em>, </em><em>default=&quot;predict&quot;</em>) – The method interface to use to get predictions from the expert model.
+If no value is passed, the default <cite>predict</cite> interface is used.</p></li>
+<li><p><strong>optimization</strong> (<em>{&quot;fidelity&quot;</em><em>, </em><em>&quot;accuracy&quot;}</em><em>, </em><em>default=&quot;fidelity&quot;</em>) – The comparison criteria to optimize the decision tree students in Trustee inner-loop.
+Used for ablation study only.</p></li>
+<li><p><strong>aggregate</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Boolean indicating whether dataset aggregation should be used in Trustee inner-loop.
+Used for ablation study only.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Boolean indicating whether to log messages.</p></li>
 </ul>
 </dd>
 </dl>
@@ -401,50 +683,142 @@ student Decision Tree Regressor based on observations from an Expert regression 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.RegressionTrustee.get_all_students">
 <span class="sig-name descname"><span class="pre">get_all_students</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.RegressionTrustee.get_all_students" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of all (student, reward) obtained during the inner-loop process.</p>
+<dd><p>Get list of all (student, reward) obtained during the inner-loop process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><strong>students_by_iter</strong> – Matrix with all student models trained during <cite>fit()</cite>.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Unconstrained fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>reward: float</dt><dd><p>Fidelity of student model to the expert model.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>array-like of shape (num_stability_iter, num_iter) of tuple (dt, reward)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.RegressionTrustee.get_leaves_by_level">
 <span class="sig-name descname"><span class="pre">get_leaves_by_level</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.RegressionTrustee.get_leaves_by_level" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of leaves by level of the best student.</p>
+<dd><p>Returns number of leaves by level of the best student.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>leaves_by_level</strong> – Dict of leaves by level. {“&lt;level&gt;(int)”: &lt;leaves&gt;(int)}</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict of int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.RegressionTrustee.get_n_classes">
 <span class="sig-name descname"><span class="pre">get_n_classes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.RegressionTrustee.get_n_classes" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns number of classes used in the top student model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n_classes</strong> – Number of classes outputted in top student model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.RegressionTrustee.get_n_features">
 <span class="sig-name descname"><span class="pre">get_n_features</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.RegressionTrustee.get_n_features" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns number of features used in the top student model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n_features</strong> – Number of features used in top student model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.RegressionTrustee.get_samples_by_level">
 <span class="sig-name descname"><span class="pre">get_samples_by_level</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.RegressionTrustee.get_samples_by_level" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of samples by level of the best student.</p>
+<dd><p>Get number of samples by level of the best student.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>samples_by_level</strong> – Dict of samples by level. {“&lt;level&gt;(int)”: &lt;samples&gt;(int)}</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict of int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.RegressionTrustee.get_samples_sum">
 <span class="sig-name descname"><span class="pre">get_samples_sum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.RegressionTrustee.get_samples_sum" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the sum of all samples in all non-leaf _nodes in best student model.</p>
+<dd><p>Get the sum of all samples in all non-leaf _nodes in best student model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>samples_sum</strong> – Sum of all samples covered by non-leaf nodes in top student model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.RegressionTrustee.get_stable">
 <span class="sig-name descname"><span class="pre">get_stable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.RegressionTrustee.get_stable" title="Permalink to this definition">#</a></dt>
-<dd><p>Filters out explanations from Trustee sability analysis with less than threshold agreement.</p>
+<dd><p>Filters out explanations from Trustee stability analysis with less than threshold agreement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>10</strong> (<em>top_k =</em>) – </p></li>
-<li><p><strong>0.9</strong> (<em>threshold =</em>) – </p></li>
-<li><p><strong>True</strong> (<em>sort =</em>) – </p></li>
+<li><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k branches, sorted by number of samples per branch, to keep after finding
+decision tree with highest fidelity.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>default=0.9</em>) – Remove any student decision tree explanation if their mean agreement goes below given threshold.
+To keep all students regardless of mean agreement, pass 0.</p></li>
+<li><p><strong>sort</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Boolean indicating whether to sort returned stable student explanation based on mean agreement.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>stable_explanations</strong> – [(dt, pruned_dt, agreement, reward), …]</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Unconstrained fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>pruned_dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Top-k pruned fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>agreement: float</dt><dd><p>Mean agreement of pruned student model with respect to others.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>reward: float</dt><dd><p>Fidelity of student model to the expert model.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like of tuple</p>
 </dd>
 </dl>
 </dd></dl>
@@ -452,25 +826,100 @@ student Decision Tree Regressor based on observations from an Expert regression 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.RegressionTrustee.get_top_branches">
 <span class="sig-name descname"><span class="pre">get_top_branches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.RegressionTrustee.get_top_branches" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of top _branches of the best student.</p>
+<dd><p>Returns list of top-k _branches of the best student, sorted by the number of samples the branch classifies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k branches, sorted by number of samples per branch, to return.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>top_branches</strong> – Dict of top-k branches from top student model.</p>
+<ul class="simple">
+<li><p>dict: { “level”: int, “path”: array-like of dict, “class”: int, “prob”: float, “samples”: int}</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like of dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.RegressionTrustee.get_top_features">
 <span class="sig-name descname"><span class="pre">get_top_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.RegressionTrustee.get_top_features" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of top _features of the best student.</p>
+<dd><p>Get list of top _features of the best student, sorted by the number of samples the feature is used to classify.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k features, sorted by number of samples per branch, to return.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>top_features</strong> – List of top-k features from top student model.</p>
+<ul class="simple">
+<li><p>dict {“&lt;feature&gt;(int)” : {“count”: int”samples”: int}}</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like of dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.RegressionTrustee.get_top_nodes">
 <span class="sig-name descname"><span class="pre">get_top_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.RegressionTrustee.get_top_nodes" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of top _nodes of the best student.</p>
+<dd><p>Returns list of top _nodes of the best student, sorted by the proportion of samples split by each node.</p>
+<dl class="simple">
+<dt>The proportion of samples is calculated based on the impurity decrease equation is the following::</dt><dd><p>n_samples * abs(left_impurity - right_impurity)</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k nodes, sorted by number of samples per branch, to return.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>top_nodes</strong> – List of top-k nodes from top student model.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dict: {“idx”: int, “level”: int, “feature”: int, “threshold”: float, “samples”: int,</dt><dd><p>”values”: tuple of int, “gini_split”: tuple of float, “data_split”: tuple of float,
+“data_split_by_class”: array-like of tuple of float}</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like of dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.RegressionTrustee.get_top_students">
 <span class="sig-name descname"><span class="pre">get_top_students</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.RegressionTrustee.get_top_students" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of top (students, reward) obtained during the outer-loop process.</p>
+<dd><p>Get list of top (students, reward) obtained during the outer-loop process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><strong>top_students</strong> – List with top student models trained during <cite>fit()</cite>.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Unconstrained fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>reward: float</dt><dd><p>Fidelity of student model to the expert model.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>array-like of shape (num_stability_iter,) of tuple (dt, reward)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -480,9 +929,15 @@ student Decision Tree Regressor based on observations from an Expert regression 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>top_k</strong> – </p></li>
-<li><p><strong>max_impurity</strong> – </p></li>
+<li><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k branches, sorted by number of samples per branch, to return.</p></li>
+<li><p><strong>max_impurity</strong> (<em>float</em><em>, </em><em>default=0.10</em>) – Maximum impurity allowed in a branch. Will prune anything below that impurity level.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>top_k_pruned_student</strong> – Top-k pruned best fitted student model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{DecisionTreeClassifier, DecisionTreeRegressor}</p>
 </dd>
 </dl>
 </dd></dl>
@@ -498,13 +953,17 @@ algorithm to train student model based on observations from an Expert model.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.Trustee.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expert</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">student_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.Trustee.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Trustee constructor</p>
+<dd><p>Trustee constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>expert</strong> – The ML blackbox model to analyze.</p></li>
-<li><p><strong>student_class</strong> – Class of student to train based on blackbox model predictions</p></li>
-<li><p><strong>(</strong><strong>optional</strong><strong>)</strong> (<em>logger</em>) – A logger object</p></li>
+<li><p><strong>expert</strong> (<em>object</em>) – The ML blackbox model to analyze. The expert model must have a <cite>predict</cite> method call implemented for
+Trustee to work properly, unless explicitly stated otherwise using the <cite>predict_method_name</cite> argument
+in the fit() method.</p></li>
+<li><p><strong>student_class</strong> (<em>Class</em>) – Class of student to train based on blackbox model predictions. The given Class must implement a <cite>fit()
+and a `predict()</cite> method interface for Trustee to work properly. The current implementation has been
+tested using the DecisionTreeClassifier and DecisionTreeRegressor from scikit-learn.</p></li>
+<li><p><strong>logger</strong> (<em>Logger object</em><em> , </em><em>default=None</em>) – A logger object to log messages to. If none is given, the print() method will be used to log messages.</p></li>
 </ul>
 </dd>
 </dl>
@@ -513,7 +972,38 @@ algorithm to train student model based on observations from an Expert model.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.Trustee.explain">
 <span class="sig-name descname"><span class="pre">explain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.Trustee.explain" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns explainable model that best imitates Expert model, based on calculated rewards.</p>
+<dd><p>Returns explainable model that best imitates Expert model, based on highest mean agreement and highest fidelity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><strong>top_student</strong> – (dt, pruned_dt, agreement, reward)</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Unconstrained fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>pruned_dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Top-k pruned fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>agreement: float</dt><dd><p>Mean agreement of pruned student model with respect to others.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>reward: float</dt><dd><p>Fidelity of student model to the expert model.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -523,20 +1013,37 @@ algorithm to train student model based on observations from an Expert model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> – </p></li>
-<li><p><strong>y</strong> – </p></li>
-<li><p><strong>max_leaf_nodes</strong> – </p></li>
-<li><p><strong>max_depth</strong> – </p></li>
-<li><p><strong>ccp_alpha</strong> – </p></li>
-<li><p><strong>train_size</strong> – </p></li>
-<li><p><strong>num_iter</strong> – </p></li>
-<li><p><strong>num_samples</strong> – </p></li>
-<li><p><strong>samples_size</strong> – </p></li>
-<li><p><strong>use_features</strong> – </p></li>
-<li><p><strong>predict_method_name</strong> – </p></li>
-<li><p><strong>optimization</strong> – </p></li>
-<li><p><strong>aggregate</strong> – </p></li>
-<li><p><strong>verbose</strong> – </p></li>
+<li><p><strong>X</strong> (<em>{array-like</em><em>, </em><em>sparse matrix} of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The training input samples. Internally, it will be converted to a pandas DataFrame.</p></li>
+<li><p><strong>y</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>,</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>n_outputs</em><em>)</em>) – The target values for X (class labels in classification, real numbers in regression).
+Internally, it will be converted to a pandas Series.</p></li>
+<li><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k branches, sorted by number of samples per branch, to keep after finding
+decision tree with highest fidelity.</p></li>
+<li><p><strong>max_leaf_nodes</strong> (<em>int</em><em>, </em><em>default=None</em>) – Grow a tree with max_leaf_nodes in best-first fashion. Best nodes are defined as
+relative reduction in impurity. If None then unlimited number of leaf nodes.</p></li>
+<li><p><strong>max_depth</strong> (<em>int</em><em>, </em><em>default=None</em>) – The maximum depth of the tree. If None, then nodes are expanded until all leaves are pure.</p></li>
+<li><p><strong>ccp_alpha</strong> (<em>float</em><em>, </em><em>default=0.0</em>) – Complexity parameter used for Minimal Cost-Complexity Pruning. The subtree with the
+largest cost complexity that is smaller than ccp_alpha will be chosen. By default,
+no pruning is performed. See Minimal Cost-Complexity Pruning here for details:
+<a class="reference external" href="https://scikit-learn.org/stable/modules/tree.html#minimal-cost-complexity-pruning">https://scikit-learn.org/stable/modules/tree.html#minimal-cost-complexity-pruning</a></p></li>
+<li><p><strong>train_size</strong> (<em>float</em><em> or </em><em>int</em><em>, </em><em>default=0.7</em>) – If float, should be between 0.0 and 1.0 and represent the proportion of the dataset
+to include in the train split. If int, represents the absolute number of train samples.</p></li>
+<li><p><strong>num_iter</strong> (<em>int</em><em>, </em><em>default=50</em>) – Number of iterations to repeat Trustee inner-loop for.</p></li>
+<li><p><strong>num_stability_iter</strong> (<em>int</em><em>, </em><em>default=5</em>) – Number of stability to repeat Trustee stabilization outer-loop for.</p></li>
+<li><p><strong>num_samples</strong> (<em>int</em><em>, </em><em>default=2000</em>) – The absolute number of samples to fetch from the training dataset split to train the
+student decision tree model. If the <cite>samples_size</cite> argument is provided, this arg is
+ignored.</p></li>
+<li><p><strong>samples_size</strong> (<em>float</em><em>, </em><em>default=None</em>) – The fraction of the training dataset to use to train the student decision tree model.
+If None, the value is automatically set to the <cite>num_samples</cite> provided value.</p></li>
+<li><p><strong>use_features</strong> (<em>array-like</em><em>, </em><em>default=None</em>) – Array-like of integers representing the indexes of features from the <cite>X</cite> training samples.
+If not None, only the features indicated by the provided indexes will be used to train the
+student decision tree model.</p></li>
+<li><p><strong>predict_method_name</strong> (<em>str</em><em>, </em><em>default=&quot;predict&quot;</em>) – The method interface to use to get predictions from the expert model.
+If no value is passed, the default <cite>predict</cite> interface is used.</p></li>
+<li><p><strong>optimization</strong> (<em>{&quot;fidelity&quot;</em><em>, </em><em>&quot;accuracy&quot;}</em><em>, </em><em>default=&quot;fidelity&quot;</em>) – The comparison criteria to optimize the decision tree students in Trustee inner-loop.
+Used for ablation study only.</p></li>
+<li><p><strong>aggregate</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Boolean indicating whether dataset aggregation should be used in Trustee inner-loop.
+Used for ablation study only.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Boolean indicating whether to log messages.</p></li>
 </ul>
 </dd>
 </dl>
@@ -545,50 +1052,142 @@ algorithm to train student model based on observations from an Expert model.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.Trustee.get_all_students">
 <span class="sig-name descname"><span class="pre">get_all_students</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.Trustee.get_all_students" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of all (student, reward) obtained during the inner-loop process.</p>
+<dd><p>Get list of all (student, reward) obtained during the inner-loop process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><strong>students_by_iter</strong> – Matrix with all student models trained during <cite>fit()</cite>.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Unconstrained fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>reward: float</dt><dd><p>Fidelity of student model to the expert model.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>array-like of shape (num_stability_iter, num_iter) of tuple (dt, reward)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.Trustee.get_leaves_by_level">
 <span class="sig-name descname"><span class="pre">get_leaves_by_level</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.Trustee.get_leaves_by_level" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of leaves by level of the best student.</p>
+<dd><p>Returns number of leaves by level of the best student.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>leaves_by_level</strong> – Dict of leaves by level. {“&lt;level&gt;(int)”: &lt;leaves&gt;(int)}</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict of int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.Trustee.get_n_classes">
 <span class="sig-name descname"><span class="pre">get_n_classes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.Trustee.get_n_classes" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns number of classes used in the top student model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n_classes</strong> – Number of classes outputted in top student model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.Trustee.get_n_features">
 <span class="sig-name descname"><span class="pre">get_n_features</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.Trustee.get_n_features" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns number of features used in the top student model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n_features</strong> – Number of features used in top student model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.Trustee.get_samples_by_level">
 <span class="sig-name descname"><span class="pre">get_samples_by_level</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.Trustee.get_samples_by_level" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of samples by level of the best student.</p>
+<dd><p>Get number of samples by level of the best student.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>samples_by_level</strong> – Dict of samples by level. {“&lt;level&gt;(int)”: &lt;samples&gt;(int)}</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict of int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.Trustee.get_samples_sum">
 <span class="sig-name descname"><span class="pre">get_samples_sum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.Trustee.get_samples_sum" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the sum of all samples in all non-leaf _nodes in best student model.</p>
+<dd><p>Get the sum of all samples in all non-leaf _nodes in best student model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>samples_sum</strong> – Sum of all samples covered by non-leaf nodes in top student model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.Trustee.get_stable">
 <span class="sig-name descname"><span class="pre">get_stable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.Trustee.get_stable" title="Permalink to this definition">#</a></dt>
-<dd><p>Filters out explanations from Trustee sability analysis with less than threshold agreement.</p>
+<dd><p>Filters out explanations from Trustee stability analysis with less than threshold agreement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>10</strong> (<em>top_k =</em>) – </p></li>
-<li><p><strong>0.9</strong> (<em>threshold =</em>) – </p></li>
-<li><p><strong>True</strong> (<em>sort =</em>) – </p></li>
+<li><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k branches, sorted by number of samples per branch, to keep after finding
+decision tree with highest fidelity.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>default=0.9</em>) – Remove any student decision tree explanation if their mean agreement goes below given threshold.
+To keep all students regardless of mean agreement, pass 0.</p></li>
+<li><p><strong>sort</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Boolean indicating whether to sort returned stable student explanation based on mean agreement.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>stable_explanations</strong> – [(dt, pruned_dt, agreement, reward), …]</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Unconstrained fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>pruned_dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Top-k pruned fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>agreement: float</dt><dd><p>Mean agreement of pruned student model with respect to others.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>reward: float</dt><dd><p>Fidelity of student model to the expert model.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like of tuple</p>
 </dd>
 </dl>
 </dd></dl>
@@ -596,25 +1195,100 @@ algorithm to train student model based on observations from an Expert model.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.Trustee.get_top_branches">
 <span class="sig-name descname"><span class="pre">get_top_branches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.Trustee.get_top_branches" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of top _branches of the best student.</p>
+<dd><p>Returns list of top-k _branches of the best student, sorted by the number of samples the branch classifies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k branches, sorted by number of samples per branch, to return.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>top_branches</strong> – Dict of top-k branches from top student model.</p>
+<ul class="simple">
+<li><p>dict: { “level”: int, “path”: array-like of dict, “class”: int, “prob”: float, “samples”: int}</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like of dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.Trustee.get_top_features">
 <span class="sig-name descname"><span class="pre">get_top_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.Trustee.get_top_features" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of top _features of the best student.</p>
+<dd><p>Get list of top _features of the best student, sorted by the number of samples the feature is used to classify.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k features, sorted by number of samples per branch, to return.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>top_features</strong> – List of top-k features from top student model.</p>
+<ul class="simple">
+<li><p>dict {“&lt;feature&gt;(int)” : {“count”: int”samples”: int}}</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like of dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.Trustee.get_top_nodes">
 <span class="sig-name descname"><span class="pre">get_top_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.Trustee.get_top_nodes" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of top _nodes of the best student.</p>
+<dd><p>Returns list of top _nodes of the best student, sorted by the proportion of samples split by each node.</p>
+<dl class="simple">
+<dt>The proportion of samples is calculated based on the impurity decrease equation is the following::</dt><dd><p>n_samples * abs(left_impurity - right_impurity)</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k nodes, sorted by number of samples per branch, to return.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>top_nodes</strong> – List of top-k nodes from top student model.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dict: {“idx”: int, “level”: int, “feature”: int, “threshold”: float, “samples”: int,</dt><dd><p>”values”: tuple of int, “gini_split”: tuple of float, “data_split”: tuple of float,
+“data_split_by_class”: array-like of tuple of float}</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like of dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.main.Trustee.get_top_students">
 <span class="sig-name descname"><span class="pre">get_top_students</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trustee.main.Trustee.get_top_students" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns list of top (students, reward) obtained during the outer-loop process.</p>
+<dd><p>Get list of top (students, reward) obtained during the outer-loop process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><strong>top_students</strong> – List with top student models trained during <cite>fit()</cite>.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dt: {DecisionTreeClassifier, DecisionTreeRegressor}</dt><dd><p>Unconstrained fitted student model.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>reward: float</dt><dd><p>Fidelity of student model to the expert model.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>array-like of shape (num_stability_iter,) of tuple (dt, reward)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -624,9 +1298,15 @@ algorithm to train student model based on observations from an Expert model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>top_k</strong> – </p></li>
-<li><p><strong>max_impurity</strong> – </p></li>
+<li><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k branches, sorted by number of samples per branch, to return.</p></li>
+<li><p><strong>max_impurity</strong> (<em>float</em><em>, </em><em>default=0.10</em>) – Maximum impurity allowed in a branch. Will prune anything below that impurity level.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>top_k_pruned_student</strong> – Top-k pruned best fitted student model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{DecisionTreeClassifier, DecisionTreeRegressor}</p>
 </dd>
 </dl>
 </dd></dl>
@@ -641,20 +1321,84 @@ algorithm to train student model based on observations from an Expert model.</p>
 <dt class="sig sig-object py" id="trustee.report.trust.TrustReport">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">trustee.report.trust.</span></span><span class="sig-name descname"><span class="pre">TrustReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blackbox</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_pruning_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predict_method_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'predict'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trustee_num_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trustee_num_stability_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trustee_sample_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trustee_max_leaf_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trustee_max_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trustee_ccp_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyze_branches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyze_stability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_retrain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_classify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.report.trust.TrustReport" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class to generate trust report</p>
+<p>Class to generate Trust Report.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.report.trust.TrustReport.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blackbox</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_pruning_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predict_method_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'predict'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trustee_num_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trustee_num_stability_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trustee_sample_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trustee_max_leaf_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trustee_max_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trustee_ccp_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyze_branches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyze_stability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_retrain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_classify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.report.trust.TrustReport.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Builds trust report for given black-box model using the Trustee method to extract white-box explanations as Decision Trees.</p>
+<dd><p>Builds Trust Report for given blackbox model using the Trustee method
+to extract whitebox explanations as Decision Trees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>blackbox</strong> (<em>object</em>) – The ML blackbox model to analyze. The expert model must have a <cite>predict</cite> method call implemented for
+Trustee to work properly, unless explicitly stated otherwise using the <cite>predict_method_name</cite>.</p></li>
+<li><p><strong>X</strong> (<em>{array-like</em><em>, </em><em>sparse matrix} of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The training input samples. Internally, it will be converted to a pandas DataFrame.
+Either (X, y) or (X_train, X_test, y_train, y_test) must be provided.</p></li>
+<li><p><strong>y</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>,</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>n_outputs</em><em>)</em>) – The target values for X (class labels in classification, real numbers in regression).
+Internally, it will be converted to a pandas Series.
+Either (X, y) or (X_train, X_test, y_train, y_test) must be provided.</p></li>
+<li><p><strong>X_train</strong> (<em>{array-like</em><em>, </em><em>sparse matrix} of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The training input samples. Internally, it will be converted to a pandas DataFrame.
+Use this argument if a fixed train-test split is to be used.
+Either (X, y) or (X_train, X_test, y_train, y_test) must be provided.</p></li>
+<li><p><strong>X_test</strong> (<em>{array-like</em><em>, </em><em>sparse matrix} of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The training input samples. Internally, it will be converted to a pandas DataFrame.
+Use this argument if a fixed train-test split is to be used.
+Either (X, y) or (X_train, X_test, y_train, y_test) must be provided.</p></li>
+<li><p><strong>y_train</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>,</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>n_outputs</em><em>)</em>) – The target values for X (class labels in classification, real numbers in regression).
+Internally, it will be converted to a pandas Series.
+Use this argument if a fixed train-test split is to be used.
+Either (X, y) or (X_train, X_test, y_train, y_test) must be provided.</p></li>
+<li><p><strong>y</strong> – The target values for X (class labels in classification, real numbers in regression).
+Internally, it will be converted to a pandas Series.
+Use this argument if a fixed train-test split is to be used.
+Either (X, y) or (X_train, X_test, y_train, y_test) must be provided.</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of iterations to repeat several analyses in the Trust Report,
+including feature removal and branch analysis.</p></li>
+<li><p><strong>num_pruning_iter</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of iterations to repeat the pruning analysis.</p></li>
+<li><p><strong>train_size</strong> (<em>float</em><em> or </em><em>int</em><em>, </em><em>default=0.7</em>) – If float, should be between 0.0 and 1.0 and represent the proportion of the dataset
+to include in the train split. If int, represents the absolute number of train samples.</p></li>
+<li><p><strong>predict_method_name</strong> (<em>str</em><em>, </em><em>default=&quot;predict&quot;</em>) – The method interface to use to get predictions from the expert model.
+If no value is passed, the default <cite>predict</cite> interface is used.</p></li>
+<li><p><strong>trustee_num_iter</strong> (<em>int</em><em>, </em><em>default=50</em>) – Number of iterations to repeat Trustee inner-loop for.</p></li>
+<li><p><strong>trustee_num_stability_iter</strong> (<em>int</em><em>, </em><em>default=5</em>) – Number of stability to repeat Trustee stabilization outer-loop for.</p></li>
+<li><p><strong>trustee_samples_size</strong> (<em>float</em><em>, </em><em>default=None</em>) – The fraction of the training dataset to use to train the student decision tree model.
+If None, the value is automatically set to the <cite>num_samples</cite> provided value.</p></li>
+<li><p><strong>trustee_max_leaf_nodes</strong> (<em>int</em><em>, </em><em>default=None</em>) – Grow a tree with max_leaf_nodes in best-first fashion. Best nodes are defined as
+relative reduction in impurity. If None then unlimited number of leaf nodes.</p></li>
+<li><p><strong>trustee_max_depth</strong> (<em>int</em><em>, </em><em>default=None</em>) – The maximum depth of the tree. If None, then nodes are expanded until all leaves are pure.</p></li>
+<li><p><strong>trustee_ccp_alpha</strong> (<em>float</em><em>, </em><em>default=0.0</em>) – Complexity parameter used for Minimal Cost-Complexity Pruning. The subtree with the
+largest cost complexity that is smaller than ccp_alpha will be chosen. By default,
+no pruning is performed. See Minimal Cost-Complexity Pruning here for details:
+<a class="reference external" href="https://scikit-learn.org/stable/modules/tree.html#minimal-cost-complexity-pruning">https://scikit-learn.org/stable/modules/tree.html#minimal-cost-complexity-pruning</a></p></li>
+<li><p><strong>analyze_branches</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Boolean indicating whether to perform the Trust Report branch analysis of Trustee explanations.</p></li>
+<li><p><strong>analyze_stability</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Boolean indicating whether to perform the Trust Report stability analysis of Trustee explanations.</p></li>
+<li><p><strong>skip_retrain</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Boolean indicating whether the Trust Report should attempt to retrain the given blackbox model.
+Used to evaluate the impact of each feature in training by iteratively removing top features.
+Works well for scikit-explain model, but can be troublesome for other libraries (especially AutoGluon).</p></li>
+<li><p><strong>top_k</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of top-k branches, sorted by number of samples per branch, to keep after finding
+decision tree with highest fidelity.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Boolean indicating whether to log messages.</p></li>
+<li><p><strong>logger</strong> (<em>Logger object</em><em> , </em><em>default=None</em>) – A logger object to log messages to. If none is given, the print() method will be used to log messages.</p></li>
+<li><p><strong>class_names</strong> (<em>array-like of str</em><em>, </em><em>default=None</em>) – List of class names to use when plotting decision trees and graphs.</p></li>
+<li><p><strong>feature_names</strong> (<em>array-like of str</em><em>, </em><em>default=None</em><em>,</em>) – List of feature names to use when plotting decision trees and graphs.</p></li>
+<li><p><strong>is_classify</strong> (<em>bool</em><em>, </em><em>default=True</em><em>,</em>) – Whether given blackbox is a classifier or regressor. The outputted plots change depending on chosen value.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trustee.report.trust.TrustReport.load">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.report.trust.TrustReport.load" title="Permalink to this definition">#</a></dt>
-<dd><p>Load the trust report from a file.</p>
+<dd><p>Load the Trust Report from a file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path to the file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>report</strong> – Loaded Trust Report from file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#trustee.report.trust.TrustReport" title="trustee.report.trust.TrustReport">TrustReport</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -665,7 +1409,11 @@ algorithm to train student model based on observations from an Expert model.</p>
 <dd><p>Plot the analysis results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>output_dir</strong> (<em>str</em>) – The output directory to save the plots.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_dir</strong> (<em>str</em>) – The output directory to save the plots.</p></li>
+<li><p><strong>aggregate</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to attempt to aggregate most important features based on the values seen in the data and branches.
+Does not always work properly, but can be useful to analyze the given dataset.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -674,13 +1422,24 @@ algorithm to train student model based on observations from an Expert model.</p>
 <dt class="sig sig-object py" id="trustee.report.trust.TrustReport.save">
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_all_dts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trustee.report.trust.TrustReport.save" title="Permalink to this definition">#</a></dt>
 <dd><p>Saves report and plots to output dir</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_dir</strong> (<em>str</em>) – The output directory to save the plots.</p></li>
+<li><p><strong>aggregate</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to attempt to aggregate most important features based on the values seen in the data and branches.
+Does not always work properly, but can be useful to analyze the given dataset.</p></li>
+<li><p><strong>save_all_dts</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to save all generated decision trees or just the main explanation.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="trustee.report.trust.TrustReport.step">
 <span class="sig-name descname"><span class="pre">step</span></span><a class="headerlink" href="#trustee.report.trust.TrustReport.step" title="Permalink to this definition">#</a></dt>
-<dd><p>total_steps =
-_prepare_data (1) +
+<dd><p>Used for progress bar.</p>
+<dl class="simple">
+<dt>total_steps =</dt><dd><p>_prepare_data (1) +
 _collect_blackbox (1) +
 _collect_trustee (1) +
 _collect_top_k_prunning (1) +
@@ -688,6 +1447,8 @@ _collect_ccp_prunning (num_pruning_iter) +
 _collect_max_depth_prunning (num_pruning_iter) +
 _collect_max_leaves_prunning (num_pruning_iter) +
 _collect_features_iter_removal (max_iter)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -707,7 +1468,15 @@ total_steps += _collect_branch_analysis (num_leaves = trustee_max_leaf_nodes or 
       <footer>
         
         <div class="related-pages">
-          
+          <a class="next-page" href="auto_examples/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Examples</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
           <a class="prev-page" href="index.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
