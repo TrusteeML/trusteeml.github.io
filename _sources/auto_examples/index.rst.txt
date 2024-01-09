@@ -15,23 +15,6 @@ Below is a gallery of examples of how to use the Trustee module.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Simple example on how to use the TrustReport class to analyze the explanations produced by Clas...">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_trust_classification_thumb.png
-    :alt: TrustReport for Classification
-
-  :ref:`sphx_glr_auto_examples_trust_classification.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">TrustReport for Classification</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Simple example on how to use the TrustReport class to analyze the explanations produced by Regr...">
 
 .. only:: html
@@ -44,6 +27,23 @@ Below is a gallery of examples of how to use the Trustee module.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">TrustReport for Regression</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Simple example on how to use the TrustReport class to analyze the explanations produced by Clas...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_trust_classification_thumb.png
+    :alt: TrustReport for Classification
+
+  :ref:`sphx_glr_auto_examples_trust_classification.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">TrustReport for Classification</div>
     </div>
 
 
@@ -89,8 +89,8 @@ Below is a gallery of examples of how to use the Trustee module.
 .. toctree::
    :hidden:
 
-   /auto_examples/trust_classification
    /auto_examples/trust_regression
+   /auto_examples/trust_classification
    /auto_examples/regression
    /auto_examples/classification
 
