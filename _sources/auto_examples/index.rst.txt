@@ -7,22 +7,27 @@ Examples
 
 Below is a gallery of examples of how to use the Trustee module.
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Simple example on how to use the TrustReport class to analyze the explanations produced by Regr...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Simple example on how to use the TrustReport class to analyze the explanations produced by RegressionTrustee from a MLPRegressor (neural network) from scikit-learn. Notice that using the method TrustReport.load(), one can load a previously generated report saved using trust_report.save().">
 
 .. only:: html
 
   .. image:: /auto_examples/images/thumb/sphx_glr_trust_regression_thumb.png
-    :alt: TrustReport for Regression
+    :alt:
 
-  :ref:`sphx_glr_auto_examples_trust_regression.py`
+  :doc:`/auto_examples/trust_regression`
 
 .. raw:: html
 
@@ -32,14 +37,14 @@ Below is a gallery of examples of how to use the Trustee module.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Simple example on how to use the TrustReport class to analyze the explanations produced by Clas...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Simple example on how to use the TrustReport class to analyze the explanations produced by ClassificationTrustee from a RandomForestClassifier from scikit-learn. Notice that using the method TrustReport.load(), one can load a previously generated report saved using trust_report.save().">
 
 .. only:: html
 
   .. image:: /auto_examples/images/thumb/sphx_glr_trust_classification_thumb.png
-    :alt: TrustReport for Classification
+    :alt:
 
-  :ref:`sphx_glr_auto_examples_trust_classification.py`
+  :doc:`/auto_examples/trust_classification`
 
 .. raw:: html
 
@@ -49,14 +54,14 @@ Below is a gallery of examples of how to use the Trustee module.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Simple example on how to use the ClassificationTrustee class to extract a decision tree from a ...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Simple example on how to use the ClassificationTrustee class to extract a decision tree from a MLPRegressor (neural network) from scikit-learn.">
 
 .. only:: html
 
   .. image:: /auto_examples/images/thumb/sphx_glr_regression_thumb.png
-    :alt: RegressionTrustee
+    :alt:
 
-  :ref:`sphx_glr_auto_examples_regression.py`
+  :doc:`/auto_examples/regression`
 
 .. raw:: html
 
@@ -66,20 +71,22 @@ Below is a gallery of examples of how to use the Trustee module.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Simple example on how to use the ClassificationTrustee class to extract a decision tree from a ...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Simple example on how to use the ClassificationTrustee class to extract a decision tree from a RandomForestClassifier from scikit-learn.">
 
 .. only:: html
 
   .. image:: /auto_examples/images/thumb/sphx_glr_classification_thumb.png
-    :alt: ClassificationTrustee
+    :alt:
 
-  :ref:`sphx_glr_auto_examples_classification.py`
+  :doc:`/auto_examples/classification`
 
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">ClassificationTrustee</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

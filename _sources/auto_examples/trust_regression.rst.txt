@@ -10,8 +10,8 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_trust_regression.py>`
-        to download the full example code
+        :ref:`Go to the end <sphx_glr_download_auto_examples_trust_regression.py>`
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -26,9 +26,10 @@ produced by RegressionTrustee from a MLPRegressor (neural network) from scikit-l
 Notice that using the method `TrustReport.load()`, one can load a previously
 generated report saved using `trust_report.save()`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-55
+.. GENERATED FROM PYTHON SOURCE LINES 10-56
 
-.. code-block:: default
+.. code-block:: Python
+
 
     import os
 
@@ -77,25 +78,23 @@ generated report saved using `trust_report.save()`.
     trust_report.save(OUTPUT_PATH)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.000 seconds)
-
-
 .. _sphx_glr_download_auto_examples_trust_regression.py:
 
 .. only:: html
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+      :download:`Download Jupyter notebook: trust_regression.ipynb <trust_regression.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: trust_regression.py <trust_regression.py>`
 
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
+    .. container:: sphx-glr-download sphx-glr-download-zip
 
-      :download:`Download Jupyter notebook: trust_regression.ipynb <trust_regression.ipynb>`
+      :download:`Download zipped: trust_regression.zip <trust_regression.zip>`
 
 
 .. only:: html

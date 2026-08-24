@@ -10,8 +10,8 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_classification.py>`
-        to download the full example code
+        :ref:`Go to the end <sphx_glr_download_auto_examples_classification.py>`
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -24,9 +24,10 @@ ClassificationTrustee
 Simple example on how to use the ClassificationTrustee class to extract
 a decision tree from a RandomForestClassifier from scikit-learn.
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-90
+.. GENERATED FROM PYTHON SOURCE LINES 8-91
 
-.. code-block:: default
+.. code-block:: Python
+
 
     # importing required libraries
     # importing Scikit-learn library and datasets package
@@ -112,25 +113,23 @@ a decision tree from a RandomForestClassifier from scikit-learn.
     graph.render("pruned_dt_explation")
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.000 seconds)
-
-
 .. _sphx_glr_download_auto_examples_classification.py:
 
 .. only:: html
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+      :download:`Download Jupyter notebook: classification.ipynb <classification.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: classification.py <classification.py>`
 
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
+    .. container:: sphx-glr-download sphx-glr-download-zip
 
-      :download:`Download Jupyter notebook: classification.ipynb <classification.ipynb>`
+      :download:`Download zipped: classification.zip <classification.zip>`
 
 
 .. only:: html
